@@ -1,13 +1,13 @@
 package pl.szinton.gk.view;
 
 import org.ejml.simple.SimpleMatrix;
-import pl.szinton.gk.Utils;
 import pl.szinton.gk.enums.Direction;
 import pl.szinton.gk.enums.RotationAxis;
 import pl.szinton.gk.enums.Zoom;
 import pl.szinton.gk.math.Matrix;
 import pl.szinton.gk.math.Vector2i;
 import pl.szinton.gk.math.Vector3f;
+import pl.szinton.gk.utils.MatrixUtils;
 
 public class Camera3D {
 
@@ -30,8 +30,8 @@ public class Camera3D {
     }
 
     public Vector2i projectPoint(Vector3f point) {
-        SimpleMatrix transformedVectorMatrix = Utils.multiplyExtendedVectorByMatrix(point, transformationMatrix);
-        Vector3f transformedVector = Utils.normalizeVectorFromMatrix(transformedVectorMatrix);
+        SimpleMatrix transformedVectorMatrix = MatrixUtils.multiplyExtendedVectorByMatrix(point, transformationMatrix);
+        Vector3f transformedVector = MatrixUtils.normalizeVectorFromMatrix(transformedVectorMatrix);
         int x = (int) (transformedVector.getX() * frameSize.getX() / transformedVector.getZ() + frameSize.getX() / 2);
         int y = (int) (-transformedVector.getY() * frameSize.getY() / transformedVector.getZ() + frameSize.getY() / 2);
         return new Vector2i(x, y);
@@ -44,8 +44,8 @@ public class Camera3D {
     public void move(Direction direction) {
         Vector3f directionVector = getDirectionVector(direction);
         SimpleMatrix rotationMatrix = Matrix.rotationZ(-rotation.getZ()).mult(Matrix.rotationY(-rotation.getY()).mult(Matrix.rotationX(-rotation.getX())));
-        Vector3f transformedVector = Utils.getVectorFromMatrix(
-                Utils.multiplyExtendedVectorByMatrix(directionVector, rotationMatrix));
+        Vector3f transformedVector = MatrixUtils.getVectorFromMatrix(
+                MatrixUtils.multiplyExtendedVectorByMatrix(directionVector, rotationMatrix));
         move(transformedVector);
     }
 

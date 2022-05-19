@@ -2,6 +2,7 @@ package pl.szinton.gk;
 
 import pl.szinton.gk.math.Vector2i;
 import pl.szinton.gk.math.Vector3f;
+import pl.szinton.gk.utils.ModelUtils;
 import pl.szinton.gk.view.*;
 
 import static pl.szinton.gk.view.ApplicationWindow.DEFAULT_HEIGHT;
@@ -16,10 +17,10 @@ public class Application {
         Camera3D camera = new Camera3D(frameSize, initialPosition);
 
         Scene scene = new PlaneScene();
-        scene.addObject(Utils.createCuboidModel(new Vector3f(4f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
-        scene.addObject(Utils.createCuboidModel(new Vector3f(4f, 0f, -8f), new Vector3f(1f, 4f, 1f)));
-        scene.addObject(Utils.createCuboidModel(new Vector3f(8f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
-        scene.addObject(Utils.createCuboidModel(new Vector3f(8f, 0f, -8f), new Vector3f(1f, 4f, 1f)));
+        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(4f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
+        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(4f, 0f, -8f), new Vector3f(1f, 4f, 1f)));
+        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(8f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
+        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(8f, 0f, -8f), new Vector3f(1f, 4f, 1f)));
 
         ApplicationWindow app = new ApplicationWindow(camera, scene);
         app.run();
