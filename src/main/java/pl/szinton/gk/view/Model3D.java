@@ -10,7 +10,7 @@ import java.util.List;
 
 public class Model3D {
 
-    private final List<Vector3f> vertices;
+    private List<Vector3f> vertices;
     private final List<Vector2i> edges; //stores vertex pairs that form an edge
     private final List<List<Integer>> planes; //stores vertex lists that form a plane
 
@@ -31,6 +31,18 @@ public class Model3D {
             g.drawLine(transformedPoint1.getX(), transformedPoint1.getY(),
                     transformedPoint2.getX(), transformedPoint2.getY());
         }
+    }
+
+    public void setVertices(List<Vector3f> vertices) {
+        this.vertices = new ArrayList<>(vertices);
+    }
+
+    public List<Vector3f> getVertices() {
+        return vertices;
+    }
+
+    public List<Vector2i> getEdges() {
+        return edges;
     }
 
     public List<List<Integer>> getPlanes() {
