@@ -41,6 +41,10 @@ public class Camera3D {
         this.frameSize = frameSize;
     }
 
+    public Vector2i getFrameSize() {
+        return frameSize;
+    }
+
     public void move(Direction direction) {
         Vector3f directionVector = getDirectionVector(direction);
         SimpleMatrix rotationMatrix = Matrix.rotationZ(-rotation.getZ()).mult(Matrix.rotationY(-rotation.getY()).mult(Matrix.rotationX(-rotation.getX())));
