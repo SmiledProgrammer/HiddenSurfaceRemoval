@@ -1,4 +1,4 @@
-package pl.szinton.gk;
+package pl.szinton.gk.math;
 
 import org.ejml.simple.SimpleMatrix;
 

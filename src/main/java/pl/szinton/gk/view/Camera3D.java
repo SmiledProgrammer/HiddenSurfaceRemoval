@@ -1,6 +1,13 @@
-package pl.szinton.gk;
+package pl.szinton.gk.view;
 
 import org.ejml.simple.SimpleMatrix;
+import pl.szinton.gk.Utils;
+import pl.szinton.gk.enums.Direction;
+import pl.szinton.gk.enums.RotationAxis;
+import pl.szinton.gk.enums.Zoom;
+import pl.szinton.gk.math.Matrix;
+import pl.szinton.gk.math.Vector2i;
+import pl.szinton.gk.math.Vector3f;
 
 public class Camera3D {
 

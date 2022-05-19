@@ -1,4 +1,7 @@
-package pl.szinton.gk;
+package pl.szinton.gk.view;
+
+import pl.szinton.gk.math.Vector2i;
+import pl.szinton.gk.math.Vector3f;
 
 import java.awt.*;
 import java.util.ArrayList;

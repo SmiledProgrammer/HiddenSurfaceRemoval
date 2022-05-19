@@ -1,6 +1,9 @@
 package pl.szinton.gk;
 
 import org.ejml.simple.SimpleMatrix;
+import pl.szinton.gk.math.Vector2i;
+import pl.szinton.gk.math.Vector3f;
+import pl.szinton.gk.view.Model3D;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package pl.szinton.gk;
+package pl.szinton.gk.math;
 
 public class Vector3f {
 

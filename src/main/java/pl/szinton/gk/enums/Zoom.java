@@ -1,4 +1,4 @@
-package pl.szinton.gk;
+package pl.szinton.gk.enums;
 
 public enum Zoom {
     IN,
