@@ -29,12 +29,12 @@ public class Camera3D {
         updateTransformationMatrix();
     }
 
-    public Vector2i projectPoint(Vector3f point) {
+    public Vector3f projectPoint(Vector3f point) {
         SimpleMatrix transformedVectorMatrix = MatrixUtils.multiplyExtendedVectorByMatrix(point, transformationMatrix);
         Vector3f transformedVector = MatrixUtils.normalizeVectorFromMatrix(transformedVectorMatrix);
-        int x = (int) (transformedVector.getX() * frameSize.getX() / transformedVector.getZ() + frameSize.getX() / 2);
-        int y = (int) (-transformedVector.getY() * frameSize.getY() / transformedVector.getZ() + frameSize.getY() / 2);
-        return new Vector2i(x, y);
+        float x = (transformedVector.getX() * frameSize.getX() / transformedVector.getZ() + frameSize.getX() / 2f);
+        float y = (-transformedVector.getY() * frameSize.getY() / transformedVector.getZ() + frameSize.getY() / 2f);
+        return new Vector3f(x, y, transformedVector.getZ());
     }
 
     public void setFrameSize(Vector2i frameSize) {

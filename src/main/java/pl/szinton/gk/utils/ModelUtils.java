@@ -9,31 +9,13 @@ import java.util.List;
 
 public class ModelUtils {
 
-    public static Model3D createModel(float[][] verticesData, int[][] edgesData) {
-        List<Vector3f> vertices = new ArrayList<>();
-        List<Vector2i> edges = new ArrayList<>();
-
-        for (float[] vertex : verticesData) {
-            if (vertex.length != 3) {
-                throw new IllegalArgumentException("Each vertex must contain 3 float values.");
-            }
-            Vector3f point = new Vector3f(vertex[0], vertex[1], vertex[2]);
-            vertices.add(point);
-        }
-        for (int[] edge : edgesData) {
-            if (edge.length != 2) {
-                throw new IllegalArgumentException("Each vertex must contain 2 integer values.");
-            }
-            Vector2i indexPair = new Vector2i(edge[0], edge[1]);
-            edges.add(indexPair);
-        }
-
-        return new Model3D(vertices, edges);
-    }
-
     public static Model3D createCuboidModel(Vector3f position, Vector3f size) {
         List<Vector3f> vertices = new ArrayList<>();
         List<Vector2i> edges = new ArrayList<>();
+        List<List<Integer>> planes = new ArrayList<>();
+        for (int i = 0; i < 6; i++) {
+            planes.add(new ArrayList<>());
+        }
 
         float x = position.getX();
         float y = position.getY();
@@ -63,6 +45,39 @@ public class ModelUtils {
         edges.add(new Vector2i(2, 6));
         edges.add(new Vector2i(3, 7));
 
-        return new Model3D(vertices, edges);
+        //bottom rectangle
+        planes.get(0).add(0);
+        planes.get(0).add(2);
+        planes.get(0).add(1);
+        planes.get(0).add(3);
+
+        //top rectangle
+        planes.get(1).add(4);
+        planes.get(1).add(6);
+        planes.get(1).add(5);
+        planes.get(1).add(7);
+
+        //side rectangles
+        planes.get(2).add(0);
+        planes.get(2).add(4);
+        planes.get(2).add(1);
+        planes.get(2).add(5);
+
+        planes.get(3).add(1);
+        planes.get(3).add(5);
+        planes.get(3).add(2);
+        planes.get(3).add(6);
+
+        planes.get(4).add(2);
+        planes.get(4).add(6);
+        planes.get(4).add(3);
+        planes.get(4).add(7);
+
+        planes.get(5).add(3);
+        planes.get(5).add(7);
+        planes.get(5).add(0);
+        planes.get(5).add(4);
+
+        return new Model3D(vertices, edges, planes);
     }
 }

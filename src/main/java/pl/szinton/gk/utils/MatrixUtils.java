@@ -1,6 +1,7 @@
 package pl.szinton.gk.utils;
 
 import org.ejml.simple.SimpleMatrix;
+import pl.szinton.gk.math.Vector2i;
 import pl.szinton.gk.math.Vector3f;
 
 public class MatrixUtils {
@@ -28,5 +29,9 @@ public class MatrixUtils {
         float y = (float) (vectorMatrix.get(1, 0) / divider);
         float z = (float) (vectorMatrix.get(2, 0) / divider);
         return new Vector3f(x, y, z);
+    }
+
+    public static Vector2i convertVector3fToVector2i(Vector3f vec) {
+        return new Vector2i((int) vec.getX(), (int) vec.getY());
     }
 }
