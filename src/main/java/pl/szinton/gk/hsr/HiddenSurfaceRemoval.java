@@ -20,7 +20,7 @@ public class HiddenSurfaceRemoval {
 //        List<PolygonData> polygonsList = initPolygonsList(planes);
 //        int viewWidth = camera.getFrameSize().getX();
 //        for (int i = 0; i < viewWidth; i++) {
-//            List<ActiveEdgeData> activeEdgesList = initActiveEdgesList(projectedObjects);
+//            List<ActiveEdgeData> activeEdgesList = initActiveEdgesList(edgesList);
 //            sortActiveEdgesList(activeEdgesList, edgesList); //edgesList needed in order to get max-Y values
 //            // TODO: go through/iterate over border values of Y coordinates (plane start and plane end)
 //            // TODO: fill color based on amount of polygons with "flag on"
@@ -42,7 +42,19 @@ public class HiddenSurfaceRemoval {
     }
 
     private static List<EdgeData> initEdgesList(List<Plane2D> polygons) {
-//        List<EdgeData> edgesList = new ArrayList<>();
+        List<EdgeData> edgesList = new ArrayList<>();
+        for (Plane2D polygon : polygons) {
+            Vector3f[] vertices = polygon.getSortedVertices();
+            for (int i=1; i < vertices.length; i++) {
+                edgesList.add(new EdgeData(vertices[i - 1], vertices[i]));
+            }
+            edgesList.add(new EdgeData(vertices[vertices.length - 1], vertices[0]));
+        }
+        return edgesList;
+    }
+
+    private static List<ActiveEdgeData> initActiveEdgesList(List<EdgeData> edgesList, int scanline) {
+        //List<EdgeData>
         throw new UnsupportedOperationException();
     }
 }
