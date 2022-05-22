@@ -31,14 +31,6 @@ public class Plane2D {
         return seed;
     }
 
-    public Vector3f[] getSortedVertices(){
-        Vector3f[] sortedVertices = new Vector3f[vertices.size()];
-        for(Integer index : verticesOrder) {
-            sortedVertices[index] = vertices.get(index);
-        }
-        return sortedVertices;
-    }
-
     public List<Vector3f> getVertices() {
         return vertices;
     }
