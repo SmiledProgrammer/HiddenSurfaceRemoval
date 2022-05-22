@@ -117,14 +117,14 @@ public class HiddenSurfaceRemoval {
     }
 
     private static Color getColorOfMostInFrontPlane(List<Plane2D> planes, boolean[] cip) {
-        float minZ = Float.MIN_VALUE; // TODO: check if shouldn't be min instead
+        float minZ = Float.MAX_VALUE; // TODO: check if shouldn't be min instead
         int i = 0;
         int minZIndex = 0;
         for (Plane2D plane : planes) {
             if (cip[i]) {
-                float zOfTheFirstVertice = plane.getVertices().get(0).getZ();
-                if (zOfTheFirstVertice < minZ) {
-                    minZ = zOfTheFirstVertice;
+                float gravityCenterZ = gravityCenter(plane).getZ();
+                if (gravityCenterZ < minZ) {
+                    minZ = gravityCenterZ;
                     minZIndex = i;
                 }
             }
@@ -136,6 +136,20 @@ public class HiddenSurfaceRemoval {
     private static void fillScanLine(Graphics2D g, float startX, float endX, int scanLineY, Color color, int viewHeight) {
         g.setColor(color);
         g.drawLine((int) startX, viewHeight - scanLineY, (int) endX, viewHeight - scanLineY);
+    }
+
+    private static Vector3f gravityCenter(Plane2D polygon) {
+        float x = 0f, y = 0f, z = 0f;
+        for (Vector3f vertice : polygon.getVertices()) {
+            x += vertice.getX();
+            y += vertice.getY();
+            z += vertice.getZ();
+        }
+        x = x/polygon.getVertices().size();
+        y = y/polygon.getVertices().size();
+        z = z/polygon.getVertices().size();
+
+        return new Vector3f(x,y,z);
     }
 
     private static Color getRandomColor() {
