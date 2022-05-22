@@ -84,14 +84,14 @@ public class HiddenSurfaceRemoval {
         // note: treat scanLine as infinite line (prosta) not as segment line (odcinek) (this way we'll omit mistakes later in the algorithm)
         if (edgeEndPoint.getY() == edgeStartPoint.getY())
             return null;        // jeśli linia jest pozioma zwracam null
-        if (edgeEndPoint.getX() == edgeStartPoint.getX())
-            return new Vector3f(edgeEndPoint.getX(), scanLineY, edgeEndPoint.getZ());
-        // pobieram Z z punktu końcowego, w przypadku prostopadłościanu na pewno będzie ok, nwm jak z innymi bryłami
-        // gdzie ściany nie są prostopadłe
         float maxY = Math.max(edgeEndPoint.getY(), edgeStartPoint.getY());
         float minY = maxY == edgeEndPoint.getY() ? edgeStartPoint.getY() : edgeEndPoint.getY();
         if (maxY < scanLineY || minY > scanLineY)
             return null;
+        if (edgeEndPoint.getX() == edgeStartPoint.getX())
+            return new Vector3f(edgeEndPoint.getX(), scanLineY, edgeEndPoint.getZ());
+        // pobieram Z z punktu końcowego, w przypadku prostopadłościanu na pewno będzie ok, nwm jak z innymi bryłami
+        // gdzie ściany nie są prostopadłe
         float invertedSlope = (edgeEndPoint.getX() - edgeStartPoint.getX()) / (edgeEndPoint.getY() - edgeStartPoint.getY());
         float b = (edgeEndPoint.getY() - edgeEndPoint.getX() / invertedSlope);
         float x = (scanLineY - b) * invertedSlope;
