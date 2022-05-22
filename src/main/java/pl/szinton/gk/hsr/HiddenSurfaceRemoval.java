@@ -68,7 +68,8 @@ public class HiddenSurfaceRemoval {
                 Color fillColor = switch (cipCount) {
                     case 0 -> backgroundColor; // unneeded imo
                     case 1 -> planes.get(getIndexOfFirstTrue(cip)).getColor();
-                    default -> getColorOfMostInFrontPlane(planes, cip, scanLineY, intersections, i);
+                    default -> getColorOfMostInFrontPlane(planes, cip);
+//                    default -> getColorOfMostInFrontPlane(planes, cip, scanLineY, intersections, i);
                 };
                 Vector3f endPoint = intersection.point();
                 fillScanLine(g, startPoint, endPoint, scanLineY, fillColor, viewHeight);
@@ -142,13 +143,13 @@ public class HiddenSurfaceRemoval {
         return count;
     }
 
-    private static Color getColorOfMostInFrontPlane(List<Plane2D> planes, boolean[] cip, int scanLineY,
+    private static Color old_getColorOfMostInFrontPlane(List<Plane2D> planes, boolean[] cip, int scanLineY,
                                                     List<PlaneIntersection> intersections, int intersectionIndex) {
         float startX = intersections.get(intersectionIndex - 1).point().getX();
         float endX = intersections.get(intersectionIndex).point().getX();
 
         float minZ = Float.MAX_VALUE; // TODO: check if shouldn't be min instead
-        int minZIndex = 0;
+        int minZIndex = -1;
         for (PlaneIntersection intersection : intersections) {
             int planeId = intersection.planeId();
             if (cip[planeId]) {
@@ -162,6 +163,23 @@ public class HiddenSurfaceRemoval {
                     minZIndex = planeId;
                 }
             }
+        }
+        return planes.get(minZIndex).getColor();
+    }
+
+    private static Color getColorOfMostInFrontPlane(List<Plane2D> planes, boolean[] cip) {
+        float minZ = Float.MAX_VALUE;
+        int i = 0;
+        int minZIndex = 0;
+        for (Plane2D plane : planes) {
+            if (cip[i]) {
+                float gravityCenterZ = gravityCenter(plane).getZ();
+                if (gravityCenterZ < minZ) {
+                    minZ = gravityCenterZ;
+                    minZIndex = i;
+                }
+            }
+            i++;
         }
         return planes.get(minZIndex).getColor();
     }
