@@ -14,21 +14,6 @@ public class HiddenSurfaceRemoval {
 
     private final static Color DEFAULT_BACKGROUND_COLOR = new Color(150, 150, 150);
 
-    @Deprecated
-    public static void deprecated_render(Graphics2D g, Camera3D camera, List<Model3D> objects) {
-        // TODO: make this pseudocode actually work
-        List<Plane2D> planes = getProjectedObjects(camera, objects);
-        List<EdgeData> edgesList = initEdgesList(planes);
-//        List<PolygonData> polygonsList = initPolygonsList(planes);
-//        int viewWidth = camera.getFrameSize().getX();
-//        for (int i = 0; i < viewWidth; i++) {
-//            List<ActiveEdgeData> activeEdgesList = initActiveEdgesList(edgesList);
-//            sortActiveEdgesList(activeEdgesList, edgesList); //edgesList needed in order to get max-Y values
-//            // TODO: go through/iterate over border values of Y coordinates (plane start and plane end)
-//            // TODO: fill color based on amount of polygons with "flag on"
-//        }
-    }
-
     public static void render(Graphics2D g, Camera3D camera, List<Model3D> objects) {
         render(g, camera, objects, DEFAULT_BACKGROUND_COLOR);
     }
@@ -150,25 +135,6 @@ public class HiddenSurfaceRemoval {
     private static void fillScanLine(Graphics2D g, float startX, float endX, int scanLineY, Color color, int viewHeight) {
         g.setColor(color);
         g.drawLine((int) startX, viewHeight - scanLineY, (int) endX, viewHeight - scanLineY);
-    }
-
-    @Deprecated
-    private static List<EdgeData> initEdgesList(List<Plane2D> polygons) {
-        List<EdgeData> edgesList = new ArrayList<>();
-        for (Plane2D polygon : polygons) {
-            Vector3f[] vertices = polygon.getSortedVertices();
-            for (int i = 1; i < vertices.length; i++) {
-                edgesList.add(new EdgeData(vertices[i - 1], vertices[i]));
-            }
-            edgesList.add(new EdgeData(vertices[vertices.length - 1], vertices[0]));
-        }
-        return edgesList;
-    }
-
-    @Deprecated
-    private static List<ActiveEdgeData> initActiveEdgesList(List<EdgeData> edgesList, int scanline) {
-        //List<EdgeData>
-        throw new UnsupportedOperationException();
     }
 
     private static Color getRandomColor() {

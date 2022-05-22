@@ -17,8 +17,9 @@ public class Plane2D {
         this.verticesOrder = new HashSet<>(verticesOrder);
 
         Random random = new Random();
-        int redValue = random.nextInt(30) + 226;
-        this.color = new Color(redValue, 30, 30);
+        int redValue = random.nextInt(130) + 126;
+        int blueValue = random.nextInt(130) + 126;
+        this.color = new Color(redValue, 0, blueValue);
     }
 
     public Vector3f[] getSortedVertices(){

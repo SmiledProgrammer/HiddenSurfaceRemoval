@@ -58,6 +58,8 @@ public class ApplicationWindow extends JFrame implements KeyListener {
             g2d.setColor(Color.DARK_GRAY);
             g2d.setFont(new Font("Dialog", Font.PLAIN, 22));
             g2d.drawString(camera.toString(), 10, 90);
+            Point mousePos = MouseInfo.getPointerInfo().getLocation(); // TODO: remove
+            g2d.drawString(mousePos.toString(), 10, 180); // TODO: remove
         }
     }
 
