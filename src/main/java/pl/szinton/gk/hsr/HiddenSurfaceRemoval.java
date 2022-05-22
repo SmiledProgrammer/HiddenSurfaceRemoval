@@ -52,21 +52,33 @@ public class HiddenSurfaceRemoval {
         boolean[] cip = new boolean[planes.size()]; // cip - currently intersecting planes
         fillScanLine(g, new Vector3f(), new Vector3f(viewWidth, 0f, 0f), scanLineY, backgroundColor, viewHeight);
         Vector3f startPoint = intersections.size() > 0 ? intersections.get(0).point() : new Vector3f();
-        for (int i = 1; i < intersections.size(); i++) {
+        for (int i = 0; i < intersections.size(); i++) {
+            if (scanLineY == 300) {
+                System.out.print("");
+            }
             PlaneIntersection intersection = intersections.get(i);
             int planeId = intersection.planeId();
-            boolean[] cipCopy = Arrays.copyOf(cip, cip.length);
+//            boolean[] cipCopy = Arrays.copyOf(cip, cip.length);
             cip[planeId] = !cip[planeId];
             int cipCount = countCurrentlyIntersectingPlanes(cip);
-            Vector3f endPoint = intersection.point();
             Color fillColor = switch (cipCount) {
                 case 0 -> backgroundColor; // unneeded imo
-                case 1 -> planes.get(intersection.planeId()).getColor();
-                default -> getColorOfMostInFrontPlane(planes, cipCopy, scanLineY, intersections, i);
+                case 1 -> planes.get(getIndexOfFirstTrue(cip)).getColor();
+                default -> getColorOfMostInFrontPlane(planes, cip, scanLineY, intersections, i);
             };
+            Vector3f endPoint = intersection.point();
             fillScanLine(g, startPoint, endPoint, scanLineY, fillColor, viewHeight);
             startPoint = endPoint;
         }
+    }
+
+    private static int getIndexOfFirstTrue(boolean[] arr) {
+        for (int i = 0; i < arr.length; i++) {
+            if (arr[i]) {
+                return i;
+            }
+        }
+        return -1;
     }
 
     private static List<PlaneIntersection> findPlaneIntersections(List<Plane2D> planes, int scanLineY) {
@@ -126,11 +138,7 @@ public class HiddenSurfaceRemoval {
 
     private static Color getColorOfMostInFrontPlane(List<Plane2D> planes, boolean[] cip, int scanLineY,
                                                     List<PlaneIntersection> intersections, int intersectionIndex) {
-        if (scanLineY > 300 && scanLineY < 305) {
-            System.out.print("");
-        }
-
-        float startX = intersections.get(intersectionIndex - 1).point().getX();
+        float startX = (intersectionIndex == 0) ? 0f : intersections.get(intersectionIndex - 1).point().getX();
         float endX = intersections.get(intersectionIndex).point().getX();
 
         float minZ = Float.MAX_VALUE; // TODO: check if shouldn't be min instead
