@@ -19,7 +19,7 @@ public class Application {
         Camera3D camera = new Camera3D(frameSize, initialPosition);
 
         Scene scene = new PlaneScene();
-//        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(4f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
+        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(4f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
 //        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(4f, 0f, -8f), new Vector3f(1f, 4f, 1f)));
 //        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(8f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
 //        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(8f, 0f, -8f), new Vector3f(1f, 4f, 1f)));
@@ -57,8 +57,8 @@ public class Application {
         );
         Model3D model2 = new Model3D(vertices2, edges2, planes2);
 
-        scene.addObject(model1);
-        scene.addObject(model2);
+//        scene.addObject(model1);
+//        scene.addObject(model2);
 
         ApplicationWindow app = new ApplicationWindow(camera, scene);
         app.run();
