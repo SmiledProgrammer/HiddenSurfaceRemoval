@@ -21,7 +21,6 @@ public class Plane2D {
         int redValue = random.nextInt(130) + 126;
         int blueValue = random.nextInt(130) + 126;
         this.color = new Color(redValue, 0, blueValue);
-        System.out.println(color);
     }
 
     private int generateSeed(List<Integer> verticesOrder) {

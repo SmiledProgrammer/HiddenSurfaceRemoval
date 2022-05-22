@@ -51,7 +51,7 @@ public class HiddenSurfaceRemoval {
         sortIntersectionsByX(intersections);
         boolean[] cip = new boolean[planes.size()]; // cip - currently intersecting planes
         fillScanLine(g, new Vector3f(), new Vector3f(viewWidth, 0f, 0f), scanLineY, backgroundColor, viewHeight);
-        Vector3f startPoint = intersections.size() > 0 ? intersections.get(0).point() : new Vector3f();
+        Vector3f startPoint = new Vector3f();
         for (int i = 0; i < intersections.size(); i++) {
             if (scanLineY == 300) {
                 System.out.print("");
