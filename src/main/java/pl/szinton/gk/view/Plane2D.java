@@ -9,12 +9,12 @@ import java.util.List;
 public class Plane2D {
 
     private final List<Vector3f> vertices;
-    private final Set<Integer> verticesOrder;
+    private final List<Integer> verticesOrder;
     private final Color color;
 
-    public Plane2D(List<Vector3f> vertices, Set<Integer> verticesOrder) {
+    public Plane2D(List<Vector3f> vertices, List<Integer> verticesOrder) {
         this.vertices = new ArrayList<>(vertices);
-        this.verticesOrder = new HashSet<>(verticesOrder);
+        this.verticesOrder = new ArrayList<>(verticesOrder);
 
         Random random = new Random();
         int redValue = random.nextInt(130) + 126;
@@ -34,7 +34,7 @@ public class Plane2D {
         return vertices;
     }
 
-    public Set<Integer> getVerticesOrder() {
+    public List<Integer> getVerticesOrder() {
         return verticesOrder;
     }
 

@@ -51,7 +51,7 @@ public class HiddenSurfaceRemoval {
             List<Vector3f> projectedVertices = model.getVertices().stream()
                     .map(camera::projectPoint).toList();
             for (List<Integer> plane : planes) {
-                Set<Integer> planeVerticesOrder = new HashSet<>(plane);
+                List<Integer> planeVerticesOrder = new ArrayList<>(plane);
                 List<Vector3f> planeVertices = planeVerticesOrder.stream()
                         .map(projectedVertices::get)
                         .collect(Collectors.toList());
@@ -66,7 +66,7 @@ public class HiddenSurfaceRemoval {
         for (int i = 0; i < planes.size(); i++) {
             Plane2D plane = planes.get(i);
             List<Vector3f> vertices = plane.getVertices();
-            Set<Integer> order = plane.getVerticesOrder();
+            List<Integer> order = plane.getVerticesOrder();
             for (int j = 0; j < order.size(); j++) {
                 Vector3f edgeStart = vertices.get(j);
                 int endIndex = (j + 1 < order.size()) ? j + 1 : 0;
