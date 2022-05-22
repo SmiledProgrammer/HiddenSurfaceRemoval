@@ -92,8 +92,21 @@ public class HiddenSurfaceRemoval {
     }
 
     private static Vector3f findIntersectionPoint(Vector3f edgeStartPoint, Vector3f edgeEndPoint, int scanLineY) {
-        throw new UnsupportedOperationException(); // TODO
         // note: treat scanLine as infinite line (prosta) not as segment line (odcinek) (this way we'll omit mistakes later in the algorithm)
+        if(edgeEndPoint.getY() == edgeStartPoint.getY())
+            return null;        // jeśli linia jest pozioma zwracam null
+        if(edgeEndPoint.getX() == edgeStartPoint.getX())
+            return new Vector3f(edgeEndPoint.getX(), scanLineY, edgeEndPoint.getZ());
+            // pobieram Z z punktu końcowego, w przypadku prostopadłościanu na pewno będzie ok, nwm jak z innymi bryłami
+            // gdzie ściany nie są prostopadłe
+        float maxY = edgeEndPoint.getY() > edgeStartPoint.getY() ? edgeEndPoint.getY() : edgeStartPoint.getY();
+        float minY = maxY == edgeEndPoint.getY() ? edgeStartPoint.getY() : edgeEndPoint.getY();
+        if(maxY < scanLineY || minY > scanLineY)
+            return null;
+        float inversedSlope = (edgeEndPoint.getX() - edgeStartPoint.getX())/(edgeEndPoint.getY() - edgeStartPoint.getY());
+        float b = (edgeEndPoint.getY() - edgeEndPoint.getX()/inversedSlope);
+        float x = (scanLineY - b)*inversedSlope;
+        return new Vector3f(x, scanLineY, edgeEndPoint.getZ());
     }
 
     private static void sortIntersectionsByX(List<PlaneIntersection> intersections) {
@@ -115,8 +128,19 @@ public class HiddenSurfaceRemoval {
     }
 
     private static Color getColorOfMostInFrontPlane(List<Plane2D> planes, boolean[] cip) {
-        float minZ = Float.MIN_VALUE; // TODO: check if shouldn't be max instead
-        throw new UnsupportedOperationException(); // TODO
+        float minZ = Float.MIN_VALUE; // TODO: check if shouldn't be min instead
+        int i = 0;
+        int minZIndex = 0;
+        for(Plane2D plane : planes) {
+            if(cip[i]) {
+                float zOfTheFirstVertice = plane.getVertices().get(0).getZ();
+                if (zOfTheFirstVertice > minZ)
+                    minZ = zOfTheFirstVertice;
+                    minZIndex = i;
+            }
+            i++;
+        }
+        return planes.get(minZIndex).getColor();
     }
 
     private static void fillScanLine(Graphics2D g, float startX, float endX, int scanLineY, Color color) {
@@ -141,5 +165,13 @@ public class HiddenSurfaceRemoval {
     private static List<ActiveEdgeData> initActiveEdgesList(List<EdgeData> edgesList, int scanline) {
         //List<EdgeData>
         throw new UnsupportedOperationException();
+    }
+
+    private static Color getRandomColor() {
+        Random rand = new Random();
+        float r = rand.nextFloat();
+        float g = rand.nextFloat();
+        float b = rand.nextFloat();
+        return new Color(r, g, b);
     }
 }
