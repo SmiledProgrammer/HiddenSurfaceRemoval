@@ -6,11 +6,13 @@ import pl.szinton.gk.view.Model3D;
 import pl.szinton.gk.view.Plane2D;
 
 import java.awt.*;
-import java.util.*;
 import java.util.List;
-import java.util.stream.Stream;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class HiddenSurfaceRemoval {
+
+    private final static Color DEFAULT_BACKGROUND_COLOR = new Color(150, 150, 150);
 
     @Deprecated
     public static void deprecated_render(Graphics2D g, Camera3D camera, List<Model3D> objects) {
@@ -28,8 +30,7 @@ public class HiddenSurfaceRemoval {
     }
 
     public static void render(Graphics2D g, Camera3D camera, List<Model3D> objects) {
-        Color defaultBackgroundColor = new Color(200, 230, 255);
-        render(g, camera, objects, defaultBackgroundColor);
+        render(g, camera, objects, DEFAULT_BACKGROUND_COLOR);
     }
 
     public static void render(Graphics2D g, Camera3D camera, List<Model3D> objects, Color backgroundColor) {
@@ -41,6 +42,7 @@ public class HiddenSurfaceRemoval {
             sortIntersectionsByX(intersections);
             boolean[] cip = new boolean[planes.size()]; // cip - currently intersecting planes
             float startX = 0f;
+            fillScanLine(g, startX, viewWidth, y, backgroundColor, viewHeight);
             for (PlaneIntersection intersection : intersections) {
                 int planeId = intersection.planeId();
                 cip[planeId] = !cip[planeId];
@@ -51,10 +53,9 @@ public class HiddenSurfaceRemoval {
                     case 1 -> planes.get(intersection.planeId()).getColor();
                     default -> getColorOfMostInFrontPlane(planes, cip);
                 };
-                fillScanLine(g, startX, endX, y, fillColor);
+                fillScanLine(g, startX, endX, y, fillColor, viewHeight);
                 startX = endX;
             }
-            fillScanLine(g, startX, viewWidth, y, backgroundColor);
         }
     }
 
@@ -66,7 +67,10 @@ public class HiddenSurfaceRemoval {
                     .map(camera::projectPoint).toList();
             for (List<Integer> plane : planes) {
                 Set<Integer> planeVerticesOrder = new HashSet<>(plane);
-                projectedPlanes.add(new Plane2D(projectedVertices, planeVerticesOrder));
+                List<Vector3f> planeVertices = planeVerticesOrder.stream()
+                        .map(projectedVertices::get)
+                        .collect(Collectors.toList());
+                projectedPlanes.add(new Plane2D(planeVertices, planeVerticesOrder));
             }
         }
         return projectedPlanes;
@@ -93,19 +97,19 @@ public class HiddenSurfaceRemoval {
 
     private static Vector3f findIntersectionPoint(Vector3f edgeStartPoint, Vector3f edgeEndPoint, int scanLineY) {
         // note: treat scanLine as infinite line (prosta) not as segment line (odcinek) (this way we'll omit mistakes later in the algorithm)
-        if(edgeEndPoint.getY() == edgeStartPoint.getY())
+        if (edgeEndPoint.getY() == edgeStartPoint.getY())
             return null;        // jeśli linia jest pozioma zwracam null
-        if(edgeEndPoint.getX() == edgeStartPoint.getX())
+        if (edgeEndPoint.getX() == edgeStartPoint.getX())
             return new Vector3f(edgeEndPoint.getX(), scanLineY, edgeEndPoint.getZ());
-            // pobieram Z z punktu końcowego, w przypadku prostopadłościanu na pewno będzie ok, nwm jak z innymi bryłami
-            // gdzie ściany nie są prostopadłe
-        float maxY = edgeEndPoint.getY() > edgeStartPoint.getY() ? edgeEndPoint.getY() : edgeStartPoint.getY();
+        // pobieram Z z punktu końcowego, w przypadku prostopadłościanu na pewno będzie ok, nwm jak z innymi bryłami
+        // gdzie ściany nie są prostopadłe
+        float maxY = Math.max(edgeEndPoint.getY(), edgeStartPoint.getY());
         float minY = maxY == edgeEndPoint.getY() ? edgeStartPoint.getY() : edgeEndPoint.getY();
-        if(maxY < scanLineY || minY > scanLineY)
+        if (maxY < scanLineY || minY > scanLineY)
             return null;
-        float inversedSlope = (edgeEndPoint.getX() - edgeStartPoint.getX())/(edgeEndPoint.getY() - edgeStartPoint.getY());
-        float b = (edgeEndPoint.getY() - edgeEndPoint.getX()/inversedSlope);
-        float x = (scanLineY - b)*inversedSlope;
+        float invertedSlope = (edgeEndPoint.getX() - edgeStartPoint.getX()) / (edgeEndPoint.getY() - edgeStartPoint.getY());
+        float b = (edgeEndPoint.getY() - edgeEndPoint.getX() / invertedSlope);
+        float x = (scanLineY - b) * invertedSlope;
         return new Vector3f(x, scanLineY, edgeEndPoint.getZ());
     }
 
@@ -131,21 +135,21 @@ public class HiddenSurfaceRemoval {
         float minZ = Float.MIN_VALUE; // TODO: check if shouldn't be min instead
         int i = 0;
         int minZIndex = 0;
-        for(Plane2D plane : planes) {
-            if(cip[i]) {
+        for (Plane2D plane : planes) {
+            if (cip[i]) {
                 float zOfTheFirstVertice = plane.getVertices().get(0).getZ();
                 if (zOfTheFirstVertice > minZ)
                     minZ = zOfTheFirstVertice;
-                    minZIndex = i;
+                minZIndex = i;
             }
             i++;
         }
         return planes.get(minZIndex).getColor();
     }
 
-    private static void fillScanLine(Graphics2D g, float startX, float endX, int scanLineY, Color color) {
+    private static void fillScanLine(Graphics2D g, float startX, float endX, int scanLineY, Color color, int viewHeight) {
         g.setColor(color);
-        g.drawLine((int) startX, -scanLineY, (int) endX, -scanLineY);
+        g.drawLine((int) startX, viewHeight - scanLineY, (int) endX, viewHeight - scanLineY);
     }
 
     @Deprecated
@@ -153,7 +157,7 @@ public class HiddenSurfaceRemoval {
         List<EdgeData> edgesList = new ArrayList<>();
         for (Plane2D polygon : polygons) {
             Vector3f[] vertices = polygon.getSortedVertices();
-            for (int i=1; i < vertices.length; i++) {
+            for (int i = 1; i < vertices.length; i++) {
                 edgesList.add(new EdgeData(vertices[i - 1], vertices[i]));
             }
             edgesList.add(new EdgeData(vertices[vertices.length - 1], vertices[0]));
