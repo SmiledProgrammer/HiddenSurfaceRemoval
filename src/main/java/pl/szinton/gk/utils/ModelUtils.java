@@ -47,36 +47,39 @@ public class ModelUtils {
 
         //bottom rectangle
         planes.get(0).add(0);
-        planes.get(0).add(2);
         planes.get(0).add(1);
         planes.get(0).add(3);
+        planes.get(0).add(2);
 
         //top rectangle
         planes.get(1).add(4);
-        planes.get(1).add(6);
         planes.get(1).add(5);
         planes.get(1).add(7);
+        planes.get(1).add(6);
 
-        //side rectangles
-        planes.get(2).add(0);
+        //-z rectangle
         planes.get(2).add(4);
-        planes.get(2).add(1);
         planes.get(2).add(5);
+        planes.get(2).add(1);
+        planes.get(2).add(0);
 
-        planes.get(3).add(1);
-        planes.get(3).add(5);
-        planes.get(3).add(2);
+        //+z rectangle
         planes.get(3).add(6);
+        planes.get(3).add(7);
+        planes.get(3).add(3);
+        planes.get(3).add(2);
 
-        planes.get(4).add(2);
-        planes.get(4).add(6);
-        planes.get(4).add(3);
+        //-x rectangle
         planes.get(4).add(7);
+        planes.get(4).add(5);
+        planes.get(4).add(1);
+        planes.get(4).add(3);
 
-        planes.get(5).add(3);
-        planes.get(5).add(7);
-        planes.get(5).add(0);
+        //+x rectangle
+        planes.get(5).add(6);
         planes.get(5).add(4);
+        planes.get(5).add(0);
+        planes.get(5).add(2);
 
         return new Model3D(vertices, edges, planes);
     }

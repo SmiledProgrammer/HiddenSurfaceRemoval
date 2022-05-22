@@ -26,8 +26,8 @@ public class HiddenSurfaceRemoval {
             List<PlaneIntersection> intersections = findPlaneIntersections(planes, y);
             sortIntersectionsByX(intersections);
             boolean[] cip = new boolean[planes.size()]; // cip - currently intersecting planes
-            float startX = 0f;
-            fillScanLine(g, startX, viewWidth, y, backgroundColor, viewHeight);
+            fillScanLine(g, 0f, viewWidth, y, backgroundColor, viewHeight);
+            float startX = intersections.size() > 0 ? intersections.get(0).point().getX() : 0f;
             for (PlaneIntersection intersection : intersections) {
                 int planeId = intersection.planeId();
                 cip[planeId] = !cip[planeId];
