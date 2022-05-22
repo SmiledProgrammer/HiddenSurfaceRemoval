@@ -60,7 +60,7 @@ public class HiddenSurfaceRemoval {
             int cipCount = countCurrentlyIntersectingPlanes(cip);
             Vector3f endPoint = intersection.point();
             Color fillColor = switch (cipCount) {
-//                case 0 -> backgroundColor; // unneeded imo
+                case 0 -> backgroundColor; // unneeded imo
                 case 1 -> planes.get(intersection.planeId()).getColor();
                 default -> getColorOfMostInFrontPlane(planes, cipCopy, scanLineY, intersections, i);
             };
@@ -126,6 +126,10 @@ public class HiddenSurfaceRemoval {
 
     private static Color getColorOfMostInFrontPlane(List<Plane2D> planes, boolean[] cip, int scanLineY,
                                                     List<PlaneIntersection> intersections, int intersectionIndex) {
+        if (scanLineY > 300 && scanLineY < 305) {
+            System.out.print("");
+        }
+
         float startX = intersections.get(intersectionIndex - 1).point().getX();
         float endX = intersections.get(intersectionIndex).point().getX();
 
@@ -138,7 +142,7 @@ public class HiddenSurfaceRemoval {
                 float endZ = findZOfPlane(planes.get(planeId), endX, scanLineY);
                 float planeMinZ = Math.min(startZ, endZ);
                 float intersectionZ = intersection.point().getZ(); // TODO: remove
-                System.out.println("intersection: " + intersectionZ + "; start: " + startZ + "; end: " + endZ);
+//                System.out.println("intersection: " + intersectionZ + "; start: " + startZ + "; end: " + endZ);
                 if (planeMinZ < minZ) {
                     minZ = planeMinZ;
                     minZIndex = planeId;
