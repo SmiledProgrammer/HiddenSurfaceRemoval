@@ -123,9 +123,10 @@ public class HiddenSurfaceRemoval {
         for (Plane2D plane : planes) {
             if (cip[i]) {
                 float zOfTheFirstVertice = plane.getVertices().get(0).getZ();
-                if (zOfTheFirstVertice > minZ)
+                if (zOfTheFirstVertice < minZ) {
                     minZ = zOfTheFirstVertice;
-                minZIndex = i;
+                    minZIndex = i;
+                }
             }
             i++;
         }
