@@ -11,9 +11,9 @@ import pl.szinton.gk.utils.MatrixUtils;
 
 public class Camera3D {
 
-    private final static float MOVE_UNIT = 1f;
-    private final static float ROTATE_UNIT = (float) (Math.PI * 0.1f);
-    private final static float ZOOM_UNIT = 0.5f;
+    private final static float MOVE_UNIT = 0.5f;
+    private final static float ROTATE_UNIT = (float) (Math.PI * 0.05f);
+    private final static float ZOOM_UNIT = 0.25f;
 
     private Vector2i frameSize;
     private Vector3f position;

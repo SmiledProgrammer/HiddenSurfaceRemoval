@@ -13,7 +13,6 @@ public class Plane2D {
     private final Color color;
 
     public Plane2D(List<Vector3f> vertices, List<Integer> verticesOrder) {
-        System.out.println("Created plane!");
         this.vertices = new ArrayList<>(vertices);
         this.verticesOrder = new ArrayList<>(verticesOrder);
 
