@@ -13,13 +13,23 @@ public class Plane2D {
     private final Color color;
 
     public Plane2D(List<Vector3f> vertices, List<Integer> verticesOrder) {
+        System.out.println("Created plane!");
         this.vertices = new ArrayList<>(vertices);
         this.verticesOrder = new ArrayList<>(verticesOrder);
 
-        Random random = new Random();
+        int seed = generateSeed(verticesOrder);
+        Random random = new Random(seed);
         int redValue = random.nextInt(130) + 126;
         int blueValue = random.nextInt(130) + 126;
         this.color = new Color(redValue, 0, blueValue);
+    }
+
+    private int generateSeed(List<Integer> verticesOrder) {
+        int seed = 0;
+        for (int i = 0; i < verticesOrder.size(); i++) {
+            seed += i * verticesOrder.get(i) * verticesOrder.get(i) - i;
+        }
+        return seed;
     }
 
     public Vector3f[] getSortedVertices(){
