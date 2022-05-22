@@ -144,6 +144,7 @@ public class HiddenSurfaceRemoval {
         if (scanLineY == 125) {
             System.out.print("");
         }
+        // TODO: try different findZOfPlane() algorithm
         for (PlaneIntersection intersection : intersections) {
             int planeId = intersection.planeId();
             if (cip[planeId]) {
@@ -156,7 +157,6 @@ public class HiddenSurfaceRemoval {
                 float roundPlaneMinZ = round(planeMinZ, 3);
                 float roundMinZ = round(minZ, 3);
                 if (roundPlaneMinZ < roundMinZ) {
-                    // TODO: ideas: mean of Z as second option OR intersectionZ as second option
                     minZ = planeMinZ;
                     minZSecondOption = planeSecondOption;
                     minZIndex = planeId;
