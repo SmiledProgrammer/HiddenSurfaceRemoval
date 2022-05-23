@@ -13,11 +13,11 @@ import static pl.szinton.gk.view.ApplicationWindow.DEFAULT_WIDTH;
 public class Application {
 
     public static void main(String[] args) {
-        Vector3f initialPosition = new Vector3f(5.38f, -1f, -4.18f);
+        Vector3f initialPosition = new Vector3f(7.27f, -1f, -4.47f);
         Vector2i frameSize = new Vector2i(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
         Camera3D camera = new Camera3D(frameSize, initialPosition);
-        camera.rotate(new Vector3f(0f, -2.36f, 0f));
+        camera.rotate(new Vector3f(0f, -7.7f, 0f));
 
         Scene scene = new PlaneScene();
         scene.addObject(ModelUtils.createCuboidModel(new Vector3f(4f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
