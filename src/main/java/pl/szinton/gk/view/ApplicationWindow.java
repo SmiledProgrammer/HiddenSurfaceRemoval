@@ -18,13 +18,15 @@ public class ApplicationWindow extends JFrame implements KeyListener {
     public final static int DEFAULT_HEIGHT = 600;
 
     protected final Camera3D camera;
-    protected final Scene scene;
     protected boolean debug;
+
+    private final ScenePanel scenePanel;
 
     public ApplicationWindow(Camera3D camera, Scene scene) {
         this.camera = camera;
-        this.scene = scene;
         this.debug = false;
+        this.scenePanel = new ScenePanel(camera, scene);
+        this.add(scenePanel);
         this.setTitle("Virtual Camera");
         this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -47,19 +49,11 @@ public class ApplicationWindow extends JFrame implements KeyListener {
     @Override
     public void paint(Graphics g) {
         super.paint(g);
-        Graphics2D g2d = (Graphics2D) g;
-        g2d.setClip(0, 0, this.getWidth(), this.getHeight());
-        g2d.setColor(new Color(200, 230, 255));
-        g2d.fillRect(0, 0, this.getWidth(), this.getHeight());
-
-        scene.render(g2d, camera);
 
         if (debug) {
-            g2d.setColor(Color.DARK_GRAY);
-            g2d.setFont(new Font("Dialog", Font.PLAIN, 22));
-            g2d.drawString(camera.toString(), 10, 90);
-            Point mousePos = MouseInfo.getPointerInfo().getLocation(); // TODO: remove
-            g2d.drawString(mousePos.toString(), 10, 180); // TODO: remove
+            g.setColor(Color.DARK_GRAY);
+            g.setFont(new Font("Dialog", Font.PLAIN, 22));
+            g.drawString(camera.toString(), 10, 90);
         }
     }
 
