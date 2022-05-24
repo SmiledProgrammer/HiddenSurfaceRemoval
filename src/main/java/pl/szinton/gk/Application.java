@@ -3,7 +3,10 @@ package pl.szinton.gk;
 import pl.szinton.gk.math.Vector2i;
 import pl.szinton.gk.math.Vector3f;
 import pl.szinton.gk.utils.ModelUtils;
-import pl.szinton.gk.view.*;
+import pl.szinton.gk.view.ApplicationWindow;
+import pl.szinton.gk.view.Camera3D;
+import pl.szinton.gk.view.PlaneScene;
+import pl.szinton.gk.view.Scene;
 
 import static pl.szinton.gk.view.ApplicationWindow.DEFAULT_HEIGHT;
 import static pl.szinton.gk.view.ApplicationWindow.DEFAULT_WIDTH;

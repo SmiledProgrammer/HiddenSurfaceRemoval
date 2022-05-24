@@ -2,8 +2,8 @@ package pl.szinton.gk.math;
 
 public class Vector2i {
 
-    private int x;
-    private int y;
+    private final int x;
+    private final int y;
 
     public Vector2i(int x, int y) {
         this.x = x;

@@ -3,8 +3,9 @@ package pl.szinton.gk.view;
 import pl.szinton.gk.math.Vector3f;
 
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class Plane2D {
 

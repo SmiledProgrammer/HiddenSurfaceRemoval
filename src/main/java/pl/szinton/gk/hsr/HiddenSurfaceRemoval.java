@@ -87,7 +87,7 @@ public class HiddenSurfaceRemoval {
         return switch (cipCount) {
             case 0 -> DEFAULT_BACKGROUND_COLOR;
             case 1 -> planes.get(getIndexOfFirstTrue(cip)).getColor();
-            default -> getColorOfMostInFrontPlane(planes, cip, scanLineY, intersections, intersectionIndex);
+            default -> getColorOfMostInFrontPlane(planes, cip, intersections, intersectionIndex);
         };
     }
 
@@ -152,7 +152,7 @@ public class HiddenSurfaceRemoval {
         return count;
     }
 
-    private static Color getColorOfMostInFrontPlane(List<Plane2D> planes, boolean[] cip, int scanLineY,
+    private static Color getColorOfMostInFrontPlane(List<Plane2D> planes, boolean[] cip,
                                                     List<PlaneIntersection> intersections, int intersectionIndex) {
         Vector3f cameraVector = new Vector3f(0f, 0f, -1f);
         float startX = intersections.get(intersectionIndex).edgeStart().getX();
