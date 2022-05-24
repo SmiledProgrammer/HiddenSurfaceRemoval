@@ -25,7 +25,7 @@ public class Camera3D {
         this.frameSize = frameSize;
         this.position = position;
         this.rotation = new Vector3f();
-        this.zoom = 2f;
+        this.zoom = 2.5f;
         updateTransformationMatrix();
     }
 

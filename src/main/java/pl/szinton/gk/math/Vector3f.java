@@ -12,6 +12,19 @@ public class Vector3f {
         this.z = 0f;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (!(obj instanceof Vector3f other)) {
+            return false;
+        }
+        return x == other.x &&
+                y == other.y &&
+                z == other.z;
+    }
+
     public Vector3f(float x, float y, float z) {
         this.x = x;
         this.y = y;

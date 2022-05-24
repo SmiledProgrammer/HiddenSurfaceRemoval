@@ -57,6 +57,7 @@ public class HiddenSurfaceRemoval {
                 fillScanLine(g, startPoint.getX(), endPoint.getX(), scanLineY, fillColor, viewHeight);
                 cip[planeId] = !cip[planeId];
                 startPoint = endPoint;
+
                 if ((int) startPoint.getX() == (int) endPoint.getX()) {
                     boolean hasNoMoreIntersections = planeHasNoMoreIntersections(intersections, i);
                     if (cip[planeId] && hasNoMoreIntersections) {
@@ -154,6 +155,8 @@ public class HiddenSurfaceRemoval {
     private static Color getColorOfMostInFrontPlane(List<Plane2D> planes, boolean[] cip, int scanLineY,
                                                     List<PlaneIntersection> intersections, int intersectionIndex) {
         Vector3f cameraVector = new Vector3f(0f, 0f, -1f);
+        float startX = intersections.get(intersectionIndex).edgeStart().getX();
+        float endX = intersections.get(intersectionIndex).edgeEnd().getX();
         float minZ = Float.MAX_VALUE;
         float minZSecondOption = 0f;
         int minZIndex = 0;
@@ -161,14 +164,16 @@ public class HiddenSurfaceRemoval {
             int planeId = intersection.planeId();
             if (cip[planeId]) {
                 Plane2D plane = planes.get(planeId);
-                float planeMinZ = getMinZOfPlaneVertices(plane);
-                float roundPlaneMinZ = round(planeMinZ, 4);
+                float planeMinZ = getMinZOfPlaneVertices(plane, startX, endX);
+                float roundPlaneMinZ = round(planeMinZ);
                 if (roundPlaneMinZ < minZ) {
                     minZ = roundPlaneMinZ;
-                    minZSecondOption = -Vector3f.dotProduct(cameraVector, plane.normalVector().unitVector());
+                    Vector3f planeVector = plane.normalVector().unitVector();
+                    minZSecondOption = -Vector3f.dotProduct(cameraVector, planeVector);
                     minZIndex = planeId;
                 } else if (roundPlaneMinZ == minZ) {
-                    float planeSecondOption = -Vector3f.dotProduct(cameraVector, plane.normalVector().unitVector());
+                    Vector3f planeVector = plane.normalVector().unitVector();
+                    float planeSecondOption = -Vector3f.dotProduct(cameraVector, planeVector);
                     if (planeSecondOption < minZSecondOption) {
                         minZ = roundPlaneMinZ;
                         minZSecondOption = planeSecondOption;
@@ -180,14 +185,29 @@ public class HiddenSurfaceRemoval {
         return planes.get(minZIndex).getColor();
     }
 
-    private static float getMinZOfPlaneVertices(Plane2D plane) {
-        return (float) plane.getVertices().stream()
-                .mapToDouble(Vector3f::getZ).min().orElse(Double.NaN);
+    private static float getMinZOfPlaneVertices(Plane2D plane, float x1, float x2) {
+        float roundX1 = round(x1);
+        float roundX2 = round(x2);
+        double minZ = plane.getVertices().stream()
+                .filter(v -> {
+                    float roundVertexX = round(v.getX());
+                    return roundVertexX == roundX1 ||
+                            roundVertexX == roundX2;
+                })
+                .mapToDouble(Vector3f::getZ)
+                .min().orElse(Double.NaN);
+        if (Double.isNaN(minZ)) {
+            return (float) plane.getVertices().stream()
+                    .mapToDouble(Vector3f::getZ)
+                    .min().orElse(Double.NaN);
+        } else {
+            return (float) minZ;
+        }
     }
 
-    private static float round(float value, int places) {
+    private static float round(float value) {
         BigDecimal bd = BigDecimal.valueOf(value);
-        bd = bd.setScale(places, RoundingMode.HALF_UP);
+        bd = bd.setScale(4, RoundingMode.HALF_UP);
         return bd.floatValue();
     }
 
