@@ -28,7 +28,7 @@ public class Plane2D {
         for (int i = 0; i < verticesOrder.size(); i++) {
             seed += i * verticesOrder.get(i) * verticesOrder.get(i) * verticesOrder.get(i);
         }
-        return seed;
+        return (seed * 31) / 17;
     }
 
     public Vector3f normalVector() {

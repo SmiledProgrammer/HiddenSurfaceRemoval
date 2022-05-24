@@ -13,17 +13,17 @@ import static pl.szinton.gk.view.ApplicationWindow.DEFAULT_WIDTH;
 public class Application {
 
     public static void main(String[] args) {
-        Vector3f initialPosition = new Vector3f(7.27f, -1f, -4.47f);
+        Vector3f initialPosition = new Vector3f(6.86f, 2.5f, 0f);
         Vector2i frameSize = new Vector2i(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
         Camera3D camera = new Camera3D(frameSize, initialPosition);
-        camera.rotate(new Vector3f(0f, -7.7f, 0f));
+        camera.rotate(new Vector3f(0f, -6.13f, 0f));
 
         Scene scene = new PlaneScene();
         scene.addObject(ModelUtils.createCuboidModel(new Vector3f(4f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
-//        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(4f, 0f, -8f), new Vector3f(1f, 4f, 1f)));
-//        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(8f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
-//        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(8f, 0f, -8f), new Vector3f(1f, 4f, 1f)));
+        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(4f, 0f, -8f), new Vector3f(1f, 4f, 1f)));
+        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(8f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
+        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(8f, 0f, -8f), new Vector3f(1f, 4f, 1f)));
         List<Vector3f> vertices1 = List.of(
                 new Vector3f(0f, 0f, 0f),
                 new Vector3f(2f, 0f, -1f),

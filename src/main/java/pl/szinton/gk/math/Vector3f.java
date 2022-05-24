@@ -18,12 +18,6 @@ public class Vector3f {
         this.z = z;
     }
 
-    public Vector3f truncateToViewSize(Vector2i viewSize) {
-        float width = viewSize.getX();
-        float height = viewSize.getY();
-        return new Vector3f(Math.max(Math.min(x, width), 0f), Math.max(Math.min(y, height), 0f), z);
-    }
-
     public Vector3f negative() {
         return new Vector3f(-x, -y, -z);
     }
