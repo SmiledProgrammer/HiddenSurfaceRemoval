@@ -158,26 +158,27 @@ public class HiddenSurfaceRemoval {
         float startX = intersections.get(intersectionIndex).edgeStart().getX();
         float endX = intersections.get(intersectionIndex).edgeEnd().getX();
         float minZ = Float.MAX_VALUE;
-        float minZSecondOption = 0f;
+        float minZDotProduct = 0f;
         int minZIndex = 0;
         for (PlaneIntersection intersection : intersections) {
             int planeId = intersection.planeId();
             if (cip[planeId]) {
                 Plane2D plane = planes.get(planeId);
-                float planeMinZ = getMinZOfPlaneVertices(plane, startX, endX);
-                float roundPlaneMinZ = round(planeMinZ);
-                if (roundPlaneMinZ < minZ) {
-                    minZ = roundPlaneMinZ;
-                    Vector3f planeVector = plane.normalVector().unitVector();
-                    minZSecondOption = -Vector3f.dotProduct(cameraVector, planeVector);
-                    minZIndex = planeId;
-                } else if (roundPlaneMinZ == minZ) {
-                    Vector3f planeVector = plane.normalVector().unitVector();
-                    float planeSecondOption = -Vector3f.dotProduct(cameraVector, planeVector);
-                    if (planeSecondOption < minZSecondOption) {
+                Vector3f planeVector = plane.normalVector().unitVector();
+                float planeDotProduct = -Vector3f.dotProduct(cameraVector, planeVector);
+                if (planeDotProduct < 1f) {
+                    float planeMinZ = getMinZOfPlaneVertices(plane, startX, endX);
+                    float roundPlaneMinZ = round(planeMinZ);
+                    if (roundPlaneMinZ < minZ) {
                         minZ = roundPlaneMinZ;
-                        minZSecondOption = planeSecondOption;
+                        minZDotProduct = planeDotProduct;
                         minZIndex = planeId;
+                    } else if (roundPlaneMinZ == minZ) {
+                        if (planeDotProduct < minZDotProduct) {
+                            minZ = roundPlaneMinZ;
+                            minZDotProduct = planeDotProduct;
+                            minZIndex = planeId;
+                        }
                     }
                 }
             }
