@@ -27,7 +27,7 @@ public class ApplicationWindow extends JFrame implements KeyListener {
         this.debug = false;
         this.scenePanel = new ScenePanel(camera, scene);
         this.add(scenePanel);
-        this.setTitle("Virtual Camera");
+        this.setTitle("Hidden surface removal");
         this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.addKeyListener(this);
