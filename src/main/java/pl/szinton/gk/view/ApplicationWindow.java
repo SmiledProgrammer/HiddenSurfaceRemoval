@@ -22,10 +22,9 @@ public class ApplicationWindow extends JFrame implements KeyListener {
     protected final Camera3D camera;
     private final Scene edgeScene;
     private final Scene planeScene;
+    private final ScenePanel scenePanel;
     protected boolean debug;
     protected boolean hsrOn;
-
-    private final ScenePanel scenePanel;
 
     public ApplicationWindow(Camera3D camera, List<Model3D> objects) {
         this.camera = camera;

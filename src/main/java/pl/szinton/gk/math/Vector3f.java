@@ -1,21 +1,32 @@
 package pl.szinton.gk.math;
 
+import java.util.Objects;
+
 public class Vector3f {
 
     private final float x;
     private final float y;
     private final float z;
+    private final int hashCode;
 
     public Vector3f() {
         this.x = 0f;
         this.y = 0f;
         this.z = 0f;
+        this.hashCode = Objects.hash(x, y, z);
+    }
+
+    public Vector3f(float x, float y, float z) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        this.hashCode = Objects.hash(x, y, z);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
+        if (this == obj) {
+            return true;
         }
         if (!(obj instanceof Vector3f other)) {
             return false;
@@ -25,10 +36,9 @@ public class Vector3f {
                 z == other.z;
     }
 
-    public Vector3f(float x, float y, float z) {
-        this.x = x;
-        this.y = y;
-        this.z = z;
+    @Override
+    public int hashCode() {
+        return hashCode;
     }
 
     public Vector3f negative() {
