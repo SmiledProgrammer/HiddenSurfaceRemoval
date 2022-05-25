@@ -13,12 +13,12 @@ public class Plane2D {
     private final List<Integer> verticesOrder;
     private final Color color;
 
-    public Plane2D(List<Vector3f> vertices, List<Integer> verticesOrder) {
+    public Plane2D(List<Vector3f> vertices, List<Integer> verticesOrder, int seedSalt) {
         this.vertices = new ArrayList<>(vertices);
         this.verticesOrder = new ArrayList<>(verticesOrder);
 
         int seed = generateSeed(verticesOrder);
-        Random random = new Random(seed);
+        Random random = new Random(seed + seedSalt);
         int redValue = random.nextInt(130) + 126;
         int blueValue = random.nextInt(130) + 126;
         this.color = new Color(redValue, 0, blueValue);

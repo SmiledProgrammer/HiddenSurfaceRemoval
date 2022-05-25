@@ -27,7 +27,8 @@ public class HiddenSurfaceRemoval {
 
     private static List<Plane2D> getProjectedObjects(Camera3D camera, List<Model3D> objects) {
         List<Plane2D> projectedPlanes = new ArrayList<>();
-        for (Model3D model : objects) {
+        for (int i = 0; i < objects.size(); i++) {
+            Model3D model = objects.get(i);
             List<List<Integer>> planes = model.getPlanes();
             List<Vector3f> projectedVertices = model.getVertices().stream()
                     .map(camera::projectPoint).toList();
@@ -36,7 +37,7 @@ public class HiddenSurfaceRemoval {
                 List<Vector3f> planeVertices = planeVerticesOrder.stream()
                         .map(projectedVertices::get)
                         .collect(Collectors.toList());
-                projectedPlanes.add(new Plane2D(planeVertices, planeVerticesOrder));
+                projectedPlanes.add(new Plane2D(planeVertices, planeVerticesOrder, i));
             }
         }
         return projectedPlanes;
