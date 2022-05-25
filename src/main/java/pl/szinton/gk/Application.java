@@ -3,10 +3,9 @@ package pl.szinton.gk;
 import pl.szinton.gk.math.Vector2i;
 import pl.szinton.gk.math.Vector3f;
 import pl.szinton.gk.utils.ModelUtils;
-import pl.szinton.gk.view.ApplicationWindow;
-import pl.szinton.gk.view.Camera3D;
-import pl.szinton.gk.view.PlaneScene;
-import pl.szinton.gk.view.Scene;
+import pl.szinton.gk.view.*;
+
+import java.util.List;
 
 import static pl.szinton.gk.view.ApplicationWindow.DEFAULT_HEIGHT;
 import static pl.szinton.gk.view.ApplicationWindow.DEFAULT_WIDTH;
@@ -20,12 +19,14 @@ public class Application {
         Camera3D camera = new Camera3D(frameSize, initialPosition);
 
         Scene scene = new PlaneScene();
-        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(4f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
-        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(4f, 0f, -8f), new Vector3f(1f, 4f, 1f)));
-//        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(8f, 0f, -4f), new Vector3f(1f, 2f, 1f)));
-//        scene.addObject(ModelUtils.createCuboidModel(new Vector3f(8f, 0f, -8f), new Vector3f(1f, 4f, 1f)));
+        List<Model3D> objects = List.of(
+                ModelUtils.createCuboidModel(new Vector3f(4f, 0f, -4f), new Vector3f(1f, 2f, 1f)),
+                ModelUtils.createCuboidModel(new Vector3f(4f, 0f, -8f), new Vector3f(1f, 4f, 1f))
+//                ModelUtils.createCuboidModel(new Vector3f(8f, 0f, -4f), new Vector3f(1f, 2f, 1f)),
+//                ModelUtils.createCuboidModel(new Vector3f(8f, 0f, -8f), new Vector3f(1f, 4f, 1f))
+        );
 
-        ApplicationWindow app = new ApplicationWindow(camera, scene);
+        ApplicationWindow app = new ApplicationWindow(camera, objects);
         app.run();
     }
 }

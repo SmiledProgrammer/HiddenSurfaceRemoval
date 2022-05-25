@@ -11,6 +11,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.List;
 
 public class ApplicationWindow extends JFrame implements KeyListener {
 
@@ -18,14 +19,26 @@ public class ApplicationWindow extends JFrame implements KeyListener {
     public final static int DEFAULT_HEIGHT = 600;
 
     protected final Camera3D camera;
+    private final Scene edgeScene;
+    private final Scene planeScene;
     protected boolean debug;
+    protected boolean hsrOn;
 
     private final ScenePanel scenePanel;
 
-    public ApplicationWindow(Camera3D camera, Scene scene) {
+    public ApplicationWindow(Camera3D camera, List<Model3D> objects) {
         this.camera = camera;
+        this.edgeScene = new EdgeScene();
+        this.planeScene = new PlaneScene();
         this.debug = false;
-        this.scenePanel = new ScenePanel(camera, scene);
+        this.hsrOn = true;
+        this.scenePanel = new ScenePanel(camera, planeScene);
+
+        for (Model3D model : objects) {
+            edgeScene.addObject(model);
+            planeScene.addObject(model);
+        }
+
         this.add(scenePanel);
         this.setTitle("Hidden surface removal");
         this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
@@ -46,6 +59,15 @@ public class ApplicationWindow extends JFrame implements KeyListener {
         this.repaint();
     }
 
+    protected void changeScene() {
+        hsrOn = !hsrOn;
+        if (hsrOn) {
+            scenePanel.setScene(planeScene);
+        } else {
+            scenePanel.setScene(edgeScene);
+        }
+    }
+
     @Override
     public void paint(Graphics g) {
         super.paint(g);
@@ -55,10 +77,6 @@ public class ApplicationWindow extends JFrame implements KeyListener {
             g.setFont(new Font("Dialog", Font.PLAIN, 22));
             g.drawString(camera.toString(), 10, 90);
         }
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
     }
 
     @Override
@@ -79,8 +97,13 @@ public class ApplicationWindow extends JFrame implements KeyListener {
             case KeyEvent.VK_C -> camera.zoom(Zoom.IN);
             case KeyEvent.VK_V -> camera.zoom(Zoom.OUT);
             case KeyEvent.VK_P -> debug = !debug;
+            case KeyEvent.VK_H -> changeScene();
         }
         this.repaint();
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
     }
 
     @Override
