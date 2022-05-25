@@ -15,6 +15,7 @@ import java.util.List;
 
 public class ApplicationWindow extends JFrame implements KeyListener {
 
+    private final static Color DEFAULT_BACKGROUND_COLOR = new Color(150, 150, 150);
     public final static int DEFAULT_WIDTH = 800;
     public final static int DEFAULT_HEIGHT = 600;
 
@@ -42,6 +43,7 @@ public class ApplicationWindow extends JFrame implements KeyListener {
         this.add(scenePanel);
         this.setTitle("Hidden surface removal");
         this.setSize(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+        this.setBackground(DEFAULT_BACKGROUND_COLOR);
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
         this.addKeyListener(this);
         this.addComponentListener(new ComponentAdapter() {
